@@ -1,3 +1,5 @@
 /.idea
 /build/*
 !/build/.gitkeep
+/download/*
+!/download/.gitkeep
