@@ -1,6 +1,8 @@
 package xiami
 
-import "music-downloader/platform"
+import (
+	"music-downloader/platform"
+)
 
 type Xiami struct {
 }

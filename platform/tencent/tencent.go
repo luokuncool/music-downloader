@@ -35,7 +35,7 @@ func (t *Tencent) Search(keyword string, page string) []platform.Song {
 	queryParams := map[string]string{
 		"format":   "json",
 		"p":        page,
-		"n":        "20",
+		"n":        "10",
 		"w":        keyword,
 		"aggr":     "1",
 		"lossless": "1",

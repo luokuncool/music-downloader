@@ -19,15 +19,16 @@ import (
 )
 
 var (
-	historyFn        = filepath.Join(os.TempDir(), ".liner_example_history")
-	commands         = []string{"search", "download", "page"}
-	searchResultData []platform.Song
-	keyword          string
-	musicPlatform    platform.MusicPlatform
-	platforms        = map[string]platform.MusicPlatform{
+	historyFn   = filepath.Join(os.TempDir(), ".liner_example_history")
+	commands    = []string{"search", "search -platform=xiami", "download", "download all", "page", "page next", "page prev"}
+	currentPage = int64(1)
+	platforms   = map[string]platform.MusicPlatform{
 		"tencent": &tencent.Tencent{},
 		"xiami":   &xiami.Xiami{},
 	}
+	searchResultData []platform.Song
+	keyword          string
+	musicPlatform    platform.MusicPlatform
 )
 
 func main() {
@@ -64,9 +65,15 @@ inputLine:
 				Name:        "search",
 				Description: "输入关键字搜索歌曲",
 				Usage:       "search [关键字] [音乐平台]",
+				Flags: []cli.Flag{
+					cli.StringFlag{
+						Name:  "platform",
+						Value: "tencent",
+					},
+				},
 				Action: func(c *cli.Context) {
 					keyword = c.Args().Get(0)
-					p := c.Args().Get(1)
+					p := c.String("platform")
 					if p == "" {
 						p = "tencent"
 					}
@@ -79,7 +86,14 @@ inputLine:
 				Description: "跳转到搜索结果的指定页",
 				Usage:       "page [页数]",
 				Action: func(c *cli.Context) {
-					Search(keyword, c.Args().Get(0))
+					page := c.Args().Get(0)
+					if page == "next" {
+						page = strconv.FormatInt(currentPage+1, 10)
+					} else if page == "prev" {
+						page = strconv.FormatInt(currentPage-1, 10)
+					}
+					currentPage, _ = strconv.ParseInt(page, 10, 64)
+					Search(keyword, page)
 				},
 			},
 			{
