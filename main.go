@@ -13,6 +13,7 @@ import (
 	"music-downloader/platform/xiami"
 	"net/http"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -60,6 +61,7 @@ inputLine:
 
 		cli.OsExiter = func(code int) {}
 		app := &cli.App{}
+		app.Name = "music-downloader"
 		app.Commands = []cli.Command{
 			{
 				Name:        "search",
@@ -115,12 +117,7 @@ inputLine:
 				},
 			},
 		}
-		app.Description = `                 _     _               _                     _                 _
-		 _ __ ___  _   _(_)___(_) ___       __| | _____      ___ __ | | ___   __ _  __| | ___ _ __
-		| '_ ` + "`" + ` _ \| | | | / __| |/ __|____ / _` + "`" + ` |/ _ \ \ /\ / / '_ \| |/ _ \ / _` + "`" + ` |/ _` + "`" + ` |/ _ \ '__|
-		| | | | | | |_| | \__ \ | (_|_____| (_| | (_) \ V  V /| | | | | (_) | (_| | (_| |  __/ |
-		|_| |_| |_|\__,_|_|___/_|\___|     \__,_|\___/ \_/\_/ |_| |_|_|\___/ \__,_|\__,_|\___|_|
-		                                                                                           `
+		app.Description = `这是一个音乐检索及下载的小工具`
 		args := append([]string{""}, strings.Split(input, " ")...)
 		err := app.Run(args)
 		if err != nil {
@@ -185,8 +182,14 @@ func Download(song platform.Song) {
 
 	reader := bufio.NewReader(resp.Body)
 	errorHandle(e)
-	w, _ := os.Getwd()
-	fileHandler, e := os.Create(filepath.Join(w, "download", song.Singer+"-"+song.Title+".mp3"))
+
+	usr, _ := user.Current()
+	downloadDir := filepath.Join(usr.HomeDir, "Downloads")
+	if _, e := os.Stat(downloadDir); e != nil {
+		_ = os.Mkdir(downloadDir, os.ModePerm)
+	}
+
+	fileHandler, e := os.Create(filepath.Join(downloadDir, song.Singer+"-"+song.Title+".mp3"))
 	errorHandle(e)
 	for {
 		p := make([]byte, 512)
