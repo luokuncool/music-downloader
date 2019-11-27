@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -120,7 +121,12 @@ inputLine:
 			},
 		}
 		app.Description = `这是一个音乐检索及下载的小工具`
-		args := append([]string{""}, strings.Split(input, " ")...)
+		pattern := `("[^"]*"|[^"\s]+)(\s+|$)`
+		r := regexp.MustCompile(pattern)
+		args := []string{""}
+		for _, arg := range r.FindAllString(input, -1) {
+			args = append(args, strings.TrimSpace(arg))
+		}
 		err := app.Run(args)
 		if err != nil {
 			//log.Fatal(err)
