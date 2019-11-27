@@ -166,7 +166,7 @@ func Search(keyword string, page string) {
 	for i, v := range searchResultData {
 		row := []string{
 			strconv.Itoa(i), v.Title, v.Singer, v.AlbumName,
-			strconv.FormatInt(int64(v.Url.Size/1024/1024), 10) + "M",
+			fmt.Sprintf("%.2fM", float64(v.Url.Size/1024/1024)),
 			v.Url.BitRate,
 		}
 		table.Append(row)
