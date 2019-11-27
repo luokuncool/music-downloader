@@ -112,7 +112,9 @@ inputLine:
 					}
 					for _, serialNumber := range serialNumbers {
 						idx, _ := strconv.ParseUint(serialNumber, 10, 64)
-						Download(searchResultData[idx])
+						if l := len(searchResultData); idx >= 0 && idx < uint64(l) {
+							Download(searchResultData[idx])
+						}
 					}
 				},
 			},
@@ -141,6 +143,10 @@ inputLine:
 }
 
 func Search(keyword string, page string) {
+	if keyword == "" {
+		fmt.Println("请输入关键字检索！")
+		return
+	}
 	searchResultData = musicPlatform.Search(keyword, page)
 
 	//out, _ := json.Marshal(searchResultData)
