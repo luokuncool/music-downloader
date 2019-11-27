@@ -152,6 +152,7 @@ func Search(keyword string, page string) {
 	//f.Close()
 
 	table := tablewriter.NewWriter(os.Stdout)
+	table.SetRowLine(true)
 	table.SetHeader([]string{"序号", "歌名", "歌手", "专辑", "大小", "比特率"})
 	for i, v := range searchResultData {
 		row := []string{
