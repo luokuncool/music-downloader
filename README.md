@@ -1,5 +1,6 @@
 ## 介绍
 这是golang写的一个音乐检索，下载小工具。
+本项目只是为了学习golang为目的，请支持正版音乐。
 
 <p align="center"><img src="./usage.gif" width="100%"></p>
 
