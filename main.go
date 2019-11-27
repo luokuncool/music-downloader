@@ -178,6 +178,7 @@ func Download(song platform.Song) {
 	}
 
 	bar := pb.StartNew(song.Url.Size)
+	bar.SetWidth(80)
 	tmpl := `{{ red "` + song.Title + `:" }} {{ bar . "<" "-" (cycle . "↖" "↗" "↘" "↙" ) "." ">"}} {{percent .}}`
 	bar.SetTemplateString(tmpl)
 
