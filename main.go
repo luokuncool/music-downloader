@@ -18,6 +18,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -84,6 +85,10 @@ inputLine:
 					p := c.String("platform")
 					if p == "" {
 						p = "tencent"
+					}
+					if _, ok := platforms[p]; !ok {
+						fmt.Printf("不支持的平台'%s', 只支持 %s \n", p, reflect.ValueOf(platforms).MapKeys())
+						return
 					}
 					musicPlatform = platforms[p]
 					Search(c.Args().Get(0), "1")
