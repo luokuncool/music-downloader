@@ -4,6 +4,7 @@ import (
 	"music-downloader/platform"
 )
 
+//Xiami 虾米音乐支持
 type Xiami struct {
 }
 

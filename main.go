@@ -8,7 +8,10 @@ import (
 	"github.com/peterh/liner"
 	"github.com/urfave/cli"
 	"log"
+	"music-downloader/helpers"
 	"music-downloader/platform"
+	"music-downloader/platform/kugou"
+	"music-downloader/platform/ntes"
 	"music-downloader/platform/tencent"
 	"music-downloader/platform/xiami"
 	"net/http"
@@ -22,11 +25,13 @@ import (
 
 var (
 	historyFn   = filepath.Join(os.TempDir(), ".liner_example_history")
-	commands    = []string{"search", "search -platform=xiami", "download", "download all", "page", "page next", "page prev"}
+	commands    = []string{"search", "search -platform=xiami", "search -platform=ntes", "search -platform=kugou", "download", "download all", "page", "page next", "page prev"}
 	currentPage = int64(1)
 	platforms   = map[string]platform.MusicPlatform{
 		"tencent": &tencent.Tencent{},
 		"xiami":   &xiami.Xiami{},
+		"ntes":    &ntes.Ntes{},
+		"kugou":   &kugou.Kugou{},
 	}
 	searchResultData []platform.Song
 	keyword          string
@@ -174,12 +179,6 @@ func Search(keyword string, page string) {
 	table.Render()
 }
 
-func errorHandle(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func Download(song platform.Song) {
 	resp, e := http.Get(song.Url.Url)
 	if e != nil {
@@ -193,7 +192,7 @@ func Download(song platform.Song) {
 	bar.SetTemplateString(tmpl)
 
 	reader := bufio.NewReader(resp.Body)
-	errorHandle(e)
+	helpers.ErrorCheck(e)
 
 	usr, _ := user.Current()
 	downloadDir := filepath.Join(usr.HomeDir, "Downloads")
@@ -202,7 +201,7 @@ func Download(song platform.Song) {
 	}
 
 	fileHandler, e := os.Create(filepath.Join(downloadDir, song.Singer+"-"+song.Title+".mp3"))
-	errorHandle(e)
+	helpers.ErrorCheck(e)
 	for {
 		p := make([]byte, 512)
 		l, e := reader.Read(p)

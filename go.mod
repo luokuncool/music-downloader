@@ -7,5 +7,6 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/olekukonko/tablewriter v0.0.3
 	github.com/peterh/liner v1.1.0
+	github.com/pkg/errors v0.8.1
 	github.com/urfave/cli v1.22.2
 )
