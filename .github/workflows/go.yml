@@ -26,3 +26,9 @@ jobs:
 
     - name: Build
       run: make
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: Music Downloader
+        path: ./build/
