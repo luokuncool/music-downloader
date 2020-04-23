@@ -25,4 +25,10 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v .
+      run: make
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: Music Downloader
+        path: ./build/
