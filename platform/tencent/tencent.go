@@ -33,7 +33,7 @@ func (t *Tencent) Search(keyword string, page string) []platform.Song {
 		"format":   {"json"},
 		"p":        {page},
 		"n":        {"10"},
-		"w":        {keyword},
+		"w":        {strings.Trim(keyword, `"`)},
 		"aggr":     {"1"},
 		"lossless": {"1"},
 		"cr":       {"1"},

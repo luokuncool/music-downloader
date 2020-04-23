@@ -47,7 +47,7 @@ func randIp(min int64, max int64) int64 {
 //Search 网易云音乐搜索
 func (n *Ntes) Search(keyword string, page string) []platform.Song {
 	pageInt, _ := strconv.Atoi(page)
-	params := fmt.Sprintf(`{"s":"%s","type":1,"limit":10,"total":true,"csrf_token":"","offset":%d}`, keyword, (pageInt-1)*10)
+	params := fmt.Sprintf(`{"s":"%s","type":1,"limit":10,"total":true,"csrf_token":"","offset":%d}`, strings.ReplaceAll(strings.Trim(keyword, `"`), `"`, `\"`), (pageInt-1)*10)
 	encText, encSecKey, _ := utils.Encrypt(params)
 	res := u.HttpPost("https://music.163.com/weapi/search/get", url.Values{"params": {encText}, "encSecKey": {encSecKey}}, header)
 
