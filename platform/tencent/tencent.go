@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"github.com/fatih/structs"
 	"math/rand"
-	"music-downloader/helpers"
 	"music-downloader/platform"
+	"music-downloader/utils"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -39,7 +39,7 @@ func (t *Tencent) Search(keyword string, page string) []platform.Song {
 		"cr":       {"1"},
 		"new_json": {"1"},
 	}
-	out := helpers.HttpGet("https://c.y.qq.com/soso/fcgi-bin/client_search_cp", q, header)
+	out := utils.HttpGet("https://c.y.qq.com/soso/fcgi-bin/client_search_cp", q, header)
 	responseObj := SearchResponse{}
 	json.Unmarshal([]byte(out), &responseObj)
 
@@ -75,7 +75,7 @@ func (t *Tencent) Search(keyword string, page string) []platform.Song {
 // Url 获取歌曲的下载链接
 func (t *Tencent) Url(id string) platform.Url {
 	songQuery := url.Values{"songmid": {id}, "platform": {"yqq"}, "format": {"json"}}
-	out := helpers.HttpGet("https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg", songQuery, header)
+	out := utils.HttpGet("https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg", songQuery, header)
 	result := SongResponse{}
 	json.Unmarshal([]byte(out), &result)
 
@@ -127,7 +127,7 @@ func (t *Tencent) Url(id string) platform.Url {
 	q.Add("data", string(payloadJson))
 
 	urlResp := UrlResponse{}
-	urlOut := helpers.HttpGet("https://u.y.qq.com/cgi-bin/musicu.fcg", q, header)
+	urlOut := utils.HttpGet("https://u.y.qq.com/cgi-bin/musicu.fcg", q, header)
 	json.Unmarshal([]byte(urlOut), &urlResp)
 
 	//f, _ := os.Create("url-result.json")

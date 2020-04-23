@@ -8,12 +8,12 @@ import (
 	"github.com/peterh/liner"
 	"github.com/urfave/cli"
 	"log"
-	"music-downloader/helpers"
 	"music-downloader/platform"
 	"music-downloader/platform/kugou"
 	"music-downloader/platform/ntes"
 	"music-downloader/platform/tencent"
 	"music-downloader/platform/xiami"
+	"music-downloader/utils"
 	"net/http"
 	"os"
 	"os/user"
@@ -197,7 +197,7 @@ func Download(song platform.Song) {
 	bar.SetTemplateString(tmpl)
 
 	reader := bufio.NewReader(resp.Body)
-	helpers.ErrorCheck(e)
+	utils.ErrorCheck(e)
 
 	usr, _ := user.Current()
 	downloadDir := filepath.Join(usr.HomeDir, "Downloads")
@@ -206,7 +206,7 @@ func Download(song platform.Song) {
 	}
 
 	fileHandler, e := os.Create(filepath.Join(downloadDir, song.Singer+"-"+song.Title+".mp3"))
-	helpers.ErrorCheck(e)
+	utils.ErrorCheck(e)
 	for {
 		p := make([]byte, 512)
 		l, e := reader.Read(p)

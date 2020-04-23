@@ -12,12 +12,13 @@
 ## 支持音乐平台
 - [x] 腾讯
 - [ ] 虾米
-- [ ] 网易
+- [x] 网易
 - [ ] 酷狗
 
 ## 特别鸣谢
-很惭愧，我并没有去网页版研究各个音乐平台的api，而是直接使用了这位大佬的成果。
+很惭愧，我并没有去网页版研究各个音乐平台的api，而是直接使用了大佬们的成果。
 * [https://github.com/metowolf/Meting](https://github.com/metowolf/Meting)
+* [https://github.com/withlin/ncma](https://github.com/withlin/ncma)
 
 ## License
 [MIT](LICENSE)
